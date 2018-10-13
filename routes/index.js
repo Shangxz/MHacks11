@@ -54,21 +54,16 @@ function handleTextRequest(body, res) {
     } else if (body.Body.startsWith("/find")) {
         var request = require("request");
 
-        var options = { 
-            method: 'GET',
-            url: 'https://www.wayfair.com/3dapi/models',
-            headers: 
-        { 'Postman-Token': '087d1f72-18ec-4166-9bd9-226bc1d65f7d',
+        var options = { method: 'GET',
+        url: 'https://www.wayfair.com/3dapi/models',
+        headers: 
+         { 'Postman-Token': '070935a7-b09d-4a2b-aec0-661e4e08ce52',
            'cache-control': 'no-cache' } };
       
-      request(options, function (error, response, responseBody) {
+      request(options, function (error, response, body) {
         if (error) throw new Error(error);
-
-        // for( var i = 0; i < responseBody.length; i++){
-        //     console.log(responseBody[i]);
-        // }
-        console.log(response);
-        console.log(typeof response);
+      
+        console.log(body);
       });
 
       sendDefaultTemplate(twiml, res);
