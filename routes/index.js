@@ -61,16 +61,14 @@ function handleTextRequest(body, res) {
         { 'Postman-Token': '087d1f72-18ec-4166-9bd9-226bc1d65f7d',
            'cache-control': 'no-cache' } };
       
-      request(options, function (error, response, body) {
+      request(options, function (error, response, responseBody) {
         if (error) throw new Error(error);
 
-        var obj = JSON.parse(body);
-
-        for( var i = 0; i < obj.length; i++){
-            console.log(obj[i]);
+        for( var i = 0; i < responseBody.length; i++){
+            console.log(responseBody[i]);
         }
-        
-        console.log(typeof obj);
+
+        console.log(typeof responseBody);
       });
 
       sendDefaultTemplate(twiml, res);
