@@ -52,22 +52,20 @@ function handleTextRequest(body, res) {
         console.log("menu");
         sendDefaultTemplate(twiml, res);
     } else if (body.Body.startsWith("/find")) {
-        var request = require("request");
-
-        var options = { method: 'GET',
-        url: 'https://www.wayfair.com/3dapi/models',
-        headers: 
-         { 'Postman-Token': '070935a7-b09d-4a2b-aec0-661e4e08ce52',
-           'cache-control': 'no-cache' } };
-      
-      request(options, function (error, response, body) {
-        if (error) throw new Error(error);
-      
-        console.log(body);
-        console.log(typeof body);
-      });
-
-      sendDefaultTemplate(twiml, res);
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "https://www.wayfair.com/3dapi/models",
+            "method": "GET",
+            "headers": {
+              "cache-control": "no-cache",
+              "Postman-Token": "a0d6a557-5b64-4351-b706-e6f70dc728b4"
+            }
+          }
+          
+          $.ajax(settings).done(function (response) {
+            console.log(response);
+          });
     } else if (body.Body.startsWith("/say")) {
         console.log("say");
         db.getUserFromPhone(body.From, function (user) {
