@@ -64,6 +64,7 @@ function handleTextRequest(body, res) {
         if (error) throw new Error(error);
       
         console.log(body);
+        console.log(typeof body);
       });
 
       sendDefaultTemplate(twiml, res);
