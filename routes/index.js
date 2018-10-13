@@ -9,13 +9,6 @@ var accountSid = 'ACb4554f1dc59bd15ac60048d4de45f7ea';
 var authToken = '5143027d7e616d634dc0a4a94ea98b27';
 var client = new twilio(accountSid, authToken);
 
-var cloudinary = require('cloudinary');
-cloudinary.config({
-    cloud_name: 'dbjaiwx9o',
-    api_key: '957379348547858',
-    api_secret: 'rkZWvN_KZ3JRkm401WdfIJFoY9c'
-});
-
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.render('index', {
@@ -26,60 +19,8 @@ router.get('/', function (req, res, next) {
 function handleImageRequest(body, res) {
     const twiml = new MessagingResponse();
     if (body.Body === "/upload-pic") {
-        cloudinary.v2.uploader.upload(body.MediaUrl0, function (error, result) {
-            twiml.message("Profile pic uploaded");
-            res.writeHead(200, {
-                'Content-Type': 'text/xml'
-            });
-            res.end(twiml.toString());
-        });
     } else if (body.Body === "/who") {
-        cloudinary.v2.uploader.upload(body.MediaUrl0, {
-            detection: "aws_rek_face"
-        }, function (error, result) {
-            if (result.info.detection.aws_rek_face.data &&
-                result.info.detection.aws_rek_face.data.celebrity_faces &&
-                result.info.detection.aws_rek_face.data.celebrity_faces.length) {
-
-                var faces = result.info.detection.aws_rek_face.data.celebrity_faces;
-                var names = "",
-                    urls = "\n";
-                for (var index = 0; index < faces.length; index++) {
-                    names += faces[index].name + ", ";
-                    if (faces[index].urls[0]) {
-                        urls += faces[index].urls[0] + "\n";
-                    }
-                }
-                names = names.slice(0, names.length - 2);
-                twiml.message("Found " + names + " in the image. " + urls);
-                res.writeHead(200, {
-                    'Content-Type': 'text/xml'
-                });
-                res.end(twiml.toString());
-            } else {
-                twiml.message("Sorry, no celebrity matches were found for the image");
-                res.writeHead(200, {
-                    'Content-Type': 'text/xml'
-                });
-                res.end(twiml.toString());
-            }
-        });
     } else if (body.Body === "/what") {
-        cloudinary.v2.uploader.upload(body.MediaUrl0, function (error, result) {
-            if (result.tags.length) {
-                twiml.message("We found " + result.tags.join(", ") + " in the image");
-                res.writeHead(200, {
-                    'Content-Type': 'text/xml'
-                });
-                res.end(twiml.toString());
-            } else {
-                twiml.message("Sorry, we were unable to find anything in the image");
-                res.writeHead(200, {
-                    'Content-Type': 'text/xml'
-                });
-                res.end(twiml.toString());
-            }
-        });
     }
 }
 
@@ -111,15 +52,21 @@ function handleTextRequest(body, res) {
         console.log("menu");
         sendDefaultTemplate(twiml, res);
     } else if (body.Body.startsWith("/find")) {
-        console.log("find");
-        const search = body.Body.replace("/find ", "\n");
-        venueSearch.venueSearch(search, function (msg) {
-            twiml.message("Name: " + msg.name + "\n" + "Link: " + msg.gLink);
-            res.writeHead(200, {
-                'Content-Type': 'text/xml'
-            });
-            res.end(twiml.toString());
-        });
+        var options = { 
+            method: 'GET',
+            url: 'https://www.wayfair.com/3dapi/models',
+            headers: 
+        { 'Postman-Token': '087d1f72-18ec-4166-9bd9-226bc1d65f7d',
+           'cache-control': 'no-cache' } };
+      
+      request(options, function (error, response, body) {
+        if (error) throw new Error(error);
+        console.log(body);
+
+        for( var i = 0; i < body.length(); i++){
+            console.log(body);
+        }
+      });
     } else if (body.Body.startsWith("/say")) {
         console.log("say");
         db.getUserFromPhone(body.From, function (user) {
