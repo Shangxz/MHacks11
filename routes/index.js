@@ -64,10 +64,10 @@ function handleTextRequest(body, res) {
       request(options, function (error, response, responseBody) {
         if (error) throw new Error(error);
 
-        for( var i = 0; i < responseBody.length; i++){
-            console.log(responseBody[i]);
-        }
-
+        // for( var i = 0; i < responseBody.length; i++){
+        //     console.log(responseBody[i]);
+        // }
+        console.log(responseBody);
         console.log(typeof responseBody);
       });
 
