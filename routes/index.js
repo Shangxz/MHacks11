@@ -63,7 +63,8 @@ function handleTextRequest(body, res) {
       
       request(options, function (error, response, body) {
         if (error) throw new Error(error);
-        console.log(body);
+        
+        body = JSON.parse(body);
 
         for( var i = 0; i < body.length; i++){
             console.log(body[i]);
