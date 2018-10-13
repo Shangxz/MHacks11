@@ -53,7 +53,7 @@ function handleTextRequest(body, res) {
         sendDefaultTemplate(twiml, res);
     } else if (body.Body.startsWith("/find")) {
         var request = require("request");
-        
+
         var options = { 
             method: 'GET',
             url: 'https://www.wayfair.com/3dapi/models',
@@ -65,7 +65,7 @@ function handleTextRequest(body, res) {
         if (error) throw new Error(error);
         console.log(body);
 
-        for( var i = 0; i < Object.keys(body).length(); i++){
+        for( var i = 0; i < body.length; i++){
             console.log(body[i].product_name);
         }
       });
