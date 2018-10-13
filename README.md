@@ -1,7 +1,3 @@
-# Sonder
-
-Sonder is a proximity-based multi-purpose private network with applications in home automation,  event planning and anonymous communication, enabled through text-based (SMS) virtual assistant.
-
 ## Getting Started
 
 Clone the repo
@@ -88,17 +84,7 @@ Same with /who, this will upload a profile picture to your account
 /device -- deprecated
 ```
 
-## Authors
-
-* **Tianchen Zhong**
-* **Ram G Athreya**
-* **Kouick Sankar Paul**
-* **Shang Zhou Xia**
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## Acknowledgments
-
-* Hack Midwest!
