@@ -100,14 +100,18 @@ function sendDefaultTemplate(twiml, res) {
 
 function handleTextRequest(body, res) {
     const twiml = new MessagingResponse();
+    console.log(body.Body);
 
     if (body.Body.startsWith("/register")) {
+        console.log("register");
         const uuid = body.Body.replace("/register ", "");
         db.insertTelephoneNumber(uuid, body.From);
         sendDefaultTemplate(twiml, res);
     } else if (body.Body == "/menu" || body.Body.toLowerCase() == "hi") {
+        console.log("menu");
         sendDefaultTemplate(twiml, res);
     } else if (body.Body.startsWith("/find")) {
+        console.log("find");
         const search = body.Body.replace("/find ", "\n");
         venueSearch.venueSearch(search, function (msg) {
             twiml.message("Name: " + msg.name + "\n" + "Link: " + msg.gLink);
@@ -117,6 +121,7 @@ function handleTextRequest(body, res) {
             res.end(twiml.toString());
         });
     } else if (body.Body.startsWith("/say")) {
+        console.log("say");
         db.getUserFromPhone(body.From, function (user) {
             const msg = body.Body.replace("/say ", "@" + user.uuid + "says:\n\n");
             db.getAllUsers(body.From, function (users) {
@@ -131,7 +136,8 @@ function handleTextRequest(body, res) {
                 }
             });
         });
-    } else if (body.Body.match(/@[A-Za-z0-9]{5}\s(.*)/) != null) {
+    } else if (body.Body.startsWith("@")) {
+        console.log("whisper");
         db.getUserFromPhone(body.From, function (sender) {
             db.getUserFromUUID(body.Body.split(" ")[0].slice(1), function (receiver) {
                 const msg = "@" + sender.uuid + " says:\n\n" + body.Body.split(" ").slice(1).join(" ");
@@ -143,6 +149,7 @@ function handleTextRequest(body, res) {
             });
         });
     } else if (body.Body == "/username") {
+        console.log("username");
         db.getUserFromPhone(body.From, function (sender) {
             twiml.message("Your Username is " + sender.uuid);
             res.writeHead(200, {
@@ -202,6 +209,7 @@ function handleTextRequest(body, res) {
             });
         }
     } else {
+        console.log("default");
         sendDefaultTemplate(twiml, res);
     }
 }
