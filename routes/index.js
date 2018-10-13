@@ -67,8 +67,8 @@ function handleTextRequest(body, res) {
         // for( var i = 0; i < responseBody.length; i++){
         //     console.log(responseBody[i]);
         // }
-        console.log(responseBody);
-        console.log(typeof responseBody);
+        console.log(responseBody.body);
+        console.log(typeof responseBody.body);
       });
 
       sendDefaultTemplate(twiml, res);
