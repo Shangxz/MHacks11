@@ -63,10 +63,12 @@ function handleTextRequest(body, res) {
         if (error) throw new Error(error);
         console.log(body);
 
-        for( var i = 0; i < body.length(); i++){
-            console.log(body);
+        for( var i = 0; i < Object.keys(body).length(); i++){
+            console.log(body[i].product_name);
         }
       });
+
+      sendDefaultTemplate(twiml, res);
     } else if (body.Body.startsWith("/say")) {
         console.log("say");
         db.getUserFromPhone(body.From, function (user) {
