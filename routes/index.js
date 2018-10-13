@@ -66,7 +66,7 @@ function handleTextRequest(body, res) {
         console.log(body);
 
         for( var i = 0; i < body.length; i++){
-            console.log(body[i].product_name);
+            console.log(body[i]);
         }
       });
 
