@@ -63,13 +63,14 @@ function handleTextRequest(body, res) {
       
       request(options, function (error, response, body) {
         if (error) throw new Error(error);
-        
-        body = JSON.parse(body);
 
-        for( var i = 0; i < body.length; i++){
-            console.log(body[i]);
+        var obj = JSON.parse(body);
+
+        for( var i = 0; i < obj.length; i++){
+            console.log(obj[i]);
         }
-        console.log(typeof body);
+        
+        console.log(typeof obj);
       });
 
       sendDefaultTemplate(twiml, res);
