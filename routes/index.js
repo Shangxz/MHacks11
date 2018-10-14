@@ -67,6 +67,8 @@ function handleTextRequest(body, res) {
             }
         });
 
+        console.log(result);
+
         twiml.message(result);
         res.writeHead(200, {
             'Content-Type': 'text/xml'
