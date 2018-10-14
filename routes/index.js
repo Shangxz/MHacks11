@@ -29,10 +29,8 @@ function sendDefaultTemplate(twiml, res) {
         "\n\n/say to say something to everyone" +
         "\n\n@<user> to DM a specific person" +
         "\n\n/find with whatever you fancy and find it nearby" +
-        "\n\n/who with an image to identify a celebrity" +
-        "\n\n/what with an image to describe a scene " +
-        "\n\n/upload-pic To upload a profile pic" +
-        "\n\n/device show/add/set to display, connect, or adjust IOT devices");
+        "\n\n/mute Mute all chat messages" +
+        "\n\n/unmute Unmute all chat messages");
     res.writeHead(200, {
         'Content-Type': 'text/xml'
     });
@@ -52,20 +50,27 @@ function handleTextRequest(body, res) {
         console.log("menu");
         sendDefaultTemplate(twiml, res);
     } else if (body.Body.startsWith("/find")) {
-        var settings = {
-            "async": true,
-            "crossDomain": true,
-            "url": "https://www.wayfair.com/3dapi/models",
-            "method": "GET",
-            "headers": {
-              "cache-control": "no-cache",
-              "Postman-Token": "a0d6a557-5b64-4351-b706-e6f70dc728b4"
+        var fs = require('fs');
+        var obj;
+        var search_string = body.Body.replace("/find ", "");
+        var result = "";
+        fs.readFile('response.json', 'utf8', function (err, data) {
+            if (err) throw err;
+            obj = JSON.parse(data);
+            for(var i = 0; i < obj.length; i++) {
+                var obj = json[i];
+                if (obj.product_name.includes(search_string)){
+                    result += obj.sku + "\n";
+                }
+                console.log(obj.id);
             }
-          }
-          
-          $.ajax(settings).done(function (response) {
-            console.log(response);
-          });
+        });
+        twiml.message(result);
+        res.writeHead(200, {
+            'Content-Type': 'text/xml'
+        });
+        res.end(twiml.toString());
+
     } else if (body.Body.startsWith("/say")) {
         console.log("say");
         db.getUserFromPhone(body.From, function (user) {
