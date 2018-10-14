@@ -60,7 +60,7 @@ function handleTextRequest(body, res) {
             for(var i = 0; i < obj.length; i++) {
                 var obj1 = obj[i];
                 if (obj1.product_name.toLowerCase().indexOf(search_string) >= 0){
-                    result += obj1.sku + "\n";
+                    result += obj1.sku + "\n" + obj1.product_page_url + "\n";
                 }
                 console.log(obj1.product_name);
                 console.log(result);
