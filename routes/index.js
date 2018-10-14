@@ -58,9 +58,9 @@ function handleTextRequest(body, res) {
             if (err) throw err;
             obj = JSON.parse(data);
             for(var i = 0; i < obj.length; i++) {
-                var obj = json[i];
-                if (obj.product_name.includes(search_string)){
-                    result += obj.sku + "\n";
+                var obj1 = obj[i];
+                if (obj1.product_name.includes(search_string)){
+                    result += obj1.sku + "\n";
                 }
                 console.log(obj.id);
             }
