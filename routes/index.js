@@ -65,16 +65,12 @@ function handleTextRequest(body, res) {
                 console.log(obj1.product_name);
                 console.log(result);
             }
+            twiml.message(result);
+            res.writeHead(200, {
+                'Content-Type': 'text/xml'
+            });
+            res.end(twiml.toString());
         });
-
-        console.log(result);
-
-        twiml.message(result);
-        res.writeHead(200, {
-            'Content-Type': 'text/xml'
-        });
-        res.end(twiml.toString());
-
     } else if (body.Body.startsWith("/say")) {
         console.log("say");
         db.getUserFromPhone(body.From, function (user) {
