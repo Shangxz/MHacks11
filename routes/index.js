@@ -54,7 +54,7 @@ function handleTextRequest(body, res) {
         var obj;
         var search_string = body.Body.replace("/find ", "");
         var result = "";
-        fs.readFile(require('path').resolve(__dirname, '../response.json'), 'utf8', function (err, data) {
+        fs.readFile(require('path').resolve(__dirname, '../routes/response.json'), 'utf8', function (err, data) {
             if (err) throw err;
             obj = JSON.parse(data);
             for(var i = 0; i < obj.length; i++) {
