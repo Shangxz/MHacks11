@@ -66,7 +66,7 @@ function handleTextRequest(body, res) {
                 console.log(result);
             }
         });
-        
+
         twiml.message(result);
         res.writeHead(200, {
             'Content-Type': 'text/xml'
@@ -80,6 +80,7 @@ function handleTextRequest(body, res) {
             db.getAllUsers(body.From, function (users) {
                 for (var index = 0; index < users.length; index++) {
                     if (users[index].phone != "not set" && users[index].phone != body.From) {
+                        console.log("Sending to: ", users[index].phone);
                         client.messages.create({
                             body: msg,
                             to: users[index].phone,
