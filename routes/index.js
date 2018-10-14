@@ -59,7 +59,7 @@ function handleTextRequest(body, res) {
             obj = JSON.parse(data);
             for(var i = 0; i < obj.length; i++) {
                 var obj1 = obj[i];
-                if (obj1.product_name.includes(search_string)){
+                if (obj1.product_name.indexOf(search_string) >= 0){
                     result += obj1.sku + "\n";
                 }
                 console.log(obj1.product_name);
