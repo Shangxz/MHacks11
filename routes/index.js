@@ -62,7 +62,7 @@ function handleTextRequest(body, res) {
                 if (obj1.product_name.includes(search_string)){
                     result += obj1.sku + "\n";
                 }
-                console.log(obj.id);
+                console.log(obj.product_name);
             }
         });
         twiml.message(result);
