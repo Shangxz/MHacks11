@@ -63,19 +63,20 @@ function handleTextRequest(body, res) {
                     var obj1 = obj[i];
                     if (obj1.product_name.toLowerCase().indexOf(search_string.toLowerCase()) >= 0){
                         result += obj1.sku + "\n" + obj1.product_page_url + "\n";
+                        console.log(obj1.product_name);
+                        console.log(result);
+                        if (counter == 5){
+                            client.messages.create({
+                                body: result,
+                                to: user.phone,
+                                from: '+14705398813'
+                            }).then((message) => console.log(message.sid));
+                            result = "";
+                            counter = 0;
+                        }
+                        counter++;
                     }
-                    console.log(obj1.product_name);
-                    console.log(result);
                 }
-                if (counter == 5){
-                    client.messages.create({
-                        body: result,
-                        to: user.phone,
-                        from: '+14705398813'
-                    }).then((message) => console.log(message.sid));
-                    result = "";
-                }
-                counter++;
             });
         });
     } else if (body.Body.startsWith("/say")) {
