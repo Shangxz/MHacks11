@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var MessagingResponse = require('twilio').twiml.MessagingResponse;
 var db = require("../lib/db");
-var venueSearch = require("../lib/venue-search");
 
 var twilio = require('twilio');
 var accountSid = 'ACb4554f1dc59bd15ac60048d4de45f7ea';
@@ -25,10 +24,11 @@ function handleImageRequest(body, res) {
 }
 
 function sendDefaultTemplate(twiml, res) {
-    twiml.message("Hi\n\n/menu to access this menu" +
+    twiml.message("Hey, Welcome to Pilot"+
+        "\n\n/menu to access this menu" +
         "\n\n/say to say something to everyone" +
         "\n\n@<user> to DM a specific person" +
-        "\n\n/find with whatever you fancy and find it nearby" +
+        "\n\n/find something special <3" +
         "\n\n/mute Mute all chat messages" +
         "\n\n/unmute Unmute all chat messages");
     res.writeHead(200, {
@@ -66,6 +66,7 @@ function handleTextRequest(body, res) {
                 console.log(result);
             }
         });
+        
         twiml.message(result);
         res.writeHead(200, {
             'Content-Type': 'text/xml'
@@ -109,8 +110,6 @@ function handleTextRequest(body, res) {
             });
             res.end(twiml.toString());
         });
-    } else if (body.Body.match(/\/send \$[0-9.]* to @[A-Za-z0-9]{5}/) != null) { // Send money
-
     } else if (body.Body == "/mute" || body.Body == "/unmute") { // Mute or unmute conversations
         db.setUserMute(body.From, body.Body == "/mute", function (sender) {
             twiml.message("You have been " + (body.Body == "/mute" ? "muted" : "unmuted") + " from global chat");
@@ -119,48 +118,7 @@ function handleTextRequest(body, res) {
             });
             res.end(twiml.toString());
         });
-    } else if (body.Body.startsWith("/device")) { //IOT Proof of Concept Functionalities
-        var option = body.Body.replace("/device ", "");
-        console.log(option);
-        if (option.startsWith("add")) {
-            // console.log("entered if");
-            var deviceName = option.replace("add ", "");
-            console.log(deviceName);
-            db.insertDevice(deviceName, function (sender) {
-                twiml.message(sender);
-                res.writeHead(200, {
-                    'Content-Type': 'text/xml'
-                });
-                res.end(twiml.toString());
-            });
-        } else if (option.startsWith("set")) {
-            var option1 = option.replace("set ", "");
-            var deviceName = option1.substr(0, option1.indexOf(' '));
-            var value = option1.substr(option1.indexOf(' ') + 1);
-            console.log(deviceName);
-            console.log(value);
-            db.modifyDevice(deviceName, value, function (sender) {
-                twiml.message(sender);
-                res.writeHead(200, {
-                    'Content-Type': 'text/xml'
-                });
-                res.end(twiml.toString());
-            });
-        } else if (option.startsWith("show")) {
-            var result = "";
-            db.getAllDevices(function (sender) {
-                for (var i = 0; i < sender.length; i++) {
-                    result += sender[i].device + " " + sender[i].value + "\n";
-                }
-                console.log(result);
-                twiml.message(result);
-                res.writeHead(200, {
-                    'Content-Type': 'text/xml'
-                });
-                res.end(twiml.toString());
-            });
-        }
-    } else {
+    }else {
         console.log("default");
         sendDefaultTemplate(twiml, res);
     }
