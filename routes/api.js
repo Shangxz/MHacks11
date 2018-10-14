@@ -51,11 +51,7 @@ router.post('/', function (req, res, next) {
                             "timestamp": dstr,
                             "expiretime": d.toISOString(),
                             "uuid": uuid,
-                            "mute": false,
-                            "info": {
-                                "foursqure": "none",
-                                "rating": 0
-                            }
+                            "mute": false
                         }
                     }
                     docClient.put(params, function (err, data) {
