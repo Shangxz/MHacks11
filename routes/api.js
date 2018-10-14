@@ -5,7 +5,7 @@ const namor = require('namor');
 var AWS = require("aws-sdk");
 
 AWS.config.update({
-    region: "us-west-1"
+    region: "us-west-1b"
 });
 
 var docClient = new AWS.DynamoDB.DocumentClient();
