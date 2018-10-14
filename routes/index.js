@@ -57,6 +57,7 @@ function handleTextRequest(body, res) {
         fs.readFile(require('path').resolve(__dirname, '../routes/response.json'), 'utf8', function (err, data) {
             if (err) throw err;
             obj = JSON.parse(data);
+            var counter = 0;
             for(var i = 0; i < obj.length; i++) {
                 var obj1 = obj[i];
                 if (obj1.product_name.toLowerCase().indexOf(search_string.toLowerCase()) >= 0){
@@ -65,11 +66,16 @@ function handleTextRequest(body, res) {
                 console.log(obj1.product_name);
                 console.log(result);
             }
-            twiml.message(result);
-            res.writeHead(200, {
-                'Content-Type': 'text/xml'
-            });
-            res.end(twiml.toString());
+            if (counter == 5){
+                twiml.message(result);
+                res.writeHead(200, {
+                    'Content-Type': 'text/xml'
+                });
+                res.end(twiml.toString());
+                result = "";
+            }
+
+            counter++;
         });
     } else if (body.Body.startsWith("/say")) {
         console.log("say");
