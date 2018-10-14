@@ -58,24 +58,25 @@ function handleTextRequest(body, res) {
             if (err) throw err;
             obj = JSON.parse(data);
             var counter = 0;
-            for(var i = 0; i < obj.length; i++) {
-                var obj1 = obj[i];
-                if (obj1.product_name.toLowerCase().indexOf(search_string.toLowerCase()) >= 0){
-                    result += obj1.sku + "\n" + obj1.product_page_url + "\n";
+            db.getUserFromPhone(body.From, function (user) {
+                for(var i = 0; i < obj.length; i++) {
+                    var obj1 = obj[i];
+                    if (obj1.product_name.toLowerCase().indexOf(search_string.toLowerCase()) >= 0){
+                        result += obj1.sku + "\n" + obj1.product_page_url + "\n";
+                    }
+                    console.log(obj1.product_name);
+                    console.log(result);
                 }
-                console.log(obj1.product_name);
-                console.log(result);
-            }
-            if (counter == 5){
-                twiml.message(result);
-                res.writeHead(200, {
-                    'Content-Type': 'text/xml'
-                });
-                res.end(twiml.toString());
-                result = "";
-            }
-
-            counter++;
+                if (counter == 5){
+                    client.messages.create({
+                        body: result,
+                        to: user.phone,
+                        from: '+14705398813'
+                    }).then((message) => console.log(message.sid));
+                    result = "";
+                }
+                counter++;
+            });
         });
     } else if (body.Body.startsWith("/say")) {
         console.log("say");
