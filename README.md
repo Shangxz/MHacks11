@@ -5,20 +5,12 @@ Clone the repo
 ### Prerequisites
 
 ```
-Python 3
+Python 3 w/ libraries:
+    qrcode
+    requests
+    Pillow
+    threading
 Computer with a compatible wifi adapter that has monitor mode
-```
-
-### Installing
-
-Install Python 3
-then run:
-
-```
-pip install qrcode
-pip install requests
-pip install Pillow
-pip install threading
 ```
 
 ## Running the scripts
@@ -32,14 +24,13 @@ sudo python3 check_unique.py
 Before running this line, make sure you have the right device number
 The default on Apple Macbook is en0
 ```
-IFACE=en0 ./sniff-probes.sh
+sudo IFACE=en0 ./sniff-probes.sh
 ```
 
 ## Deployment
 
 ```
-Scan the QR code titled with 'fr' then 'sn' will appear.
-You will then be brought to a number to initiate a text send.
+Scan the QR code titled with 'fr'. It will prompt you to join a fake networkm 
 This will be the number you will use to interact with the virtual assistant by sending text messages.
 ```
 
@@ -48,41 +39,35 @@ This will be the number you will use to interact with the virtual assistant by s
 ```
 /menu
 
-Shows the menu that contains information regarding all options
+Shows the main menu containing a variety of options
 ```
 ```
 /say <message>
 
-Broadcast message to all user in the chat room
+Broadcast message to all users in the chat channel
 ```
 ```
 @<user>
 
-Private message a user at their given user ID
+Private message a user with the given user ID
 ```
 ```
-/find <topic>
+/find <item>
 
-This will find the nearest store/restaurant that satisfies the topic given. This data will be pulled from Four Square
+This will query the Wayfair api for the request item
 ```
 ```
-/who <picture>
+/mute
 
-By taking a picture and then typing this command, the virtual assistant will tell you which famous people are in the picture
+This will prevent all messages from the chat channel from appearing
 ```
-``` 
-/what <picture>
+```
+/unmute
 
-Same with /who, this will tell you what objects are in the photo
+This will enable messages to appear on for you
 ```
-```
-/upload-pic <picture>
 
-Same with /who, this will upload a profile picture to your account
-```
-```
-/device -- deprecated
-```
+
 
 ## License
 
